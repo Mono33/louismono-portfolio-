@@ -133,15 +133,17 @@ export default async function MusicPage() {
             {musicReleases.singles.map((single, index) => (
               <div 
                 key={index}
-                className="bg-white/5 rounded-xl p-6 border border-white/5 hover:border-white/10 hover:bg-white/10 transition-all"
+                className="bg-white/5 rounded-xl overflow-hidden border border-white/5 hover:border-white/10 transition-all"
               >
-                <div className="w-16 h-16 bg-gradient-to-br from-[#d4af37] to-[#1a365d] rounded-lg mb-4 flex items-center justify-center">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
-                  </svg>
-                </div>
-                <h3 className="font-semibold mb-1">{single.title}</h3>
-                <p className="text-sm text-gray-500">{single.year} • {single.type}</p>
+                <iframe
+                  src={`https://open.spotify.com/embed/album/${single.spotifyId}?utm_source=generator&theme=0`}
+                  width="100%"
+                  height="152"
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy"
+                  className="border-0"
+                  title={single.title}
+                />
               </div>
             ))}
           </div>
@@ -155,20 +157,33 @@ export default async function MusicPage() {
           
           <div className="bg-white/5 rounded-2xl p-6 border border-white/5">
             <div className="space-y-4">
-              {musicReleases.popularTracks.map((track, index) => (
-                <div 
-                  key={track}
-                  className="flex items-center gap-4 py-3 border-b border-white/5 last:border-0"
-                >
-                  <span className="text-2xl font-bold text-[#d4af37] w-8">{index + 1}</span>
-                  <div className="w-12 h-12 bg-gradient-to-br from-[#d4af37]/20 to-[#1a365d]/20 rounded flex items-center justify-center">
-                    <svg className="w-6 h-6 text-[#d4af37]" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M8 5v14l11-7z"/>
+              {musicReleases.popularTracks.map((track, index) => {
+                const matchingSingle = musicReleases.singles.find(s => 
+                  s.title === track || track.startsWith(s.title)
+                );
+                return (
+                  <a
+                    key={track}
+                    href={matchingSingle?.spotifyUrl || socialLinks.spotify}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-4 py-3 border-b border-white/5 last:border-0 hover:bg-white/5 rounded-lg px-2 -mx-2 transition-colors group"
+                  >
+                    <span className="text-2xl font-bold text-[#d4af37] w-8">{index + 1}</span>
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#d4af37]/20 to-[#1a365d]/20 rounded flex items-center justify-center group-hover:from-[#d4af37]/30 group-hover:to-[#1a365d]/30 transition-colors">
+                      <svg className="w-6 h-6 text-[#d4af37]" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-medium text-lg">{track}</p>
+                    </div>
+                    <svg className="w-4 h-4 text-gray-500 group-hover:text-[#1DB954] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                     </svg>
-                  </div>
-                  <p className="font-medium text-lg">{track}</p>
-                </div>
-              ))}
+                  </a>
+                );
+              })}
             </div>
           </div>
         </section>
