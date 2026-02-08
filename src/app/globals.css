@@ -1,26 +1,161 @@
 @import "tailwindcss";
 
+/* Force dark mode */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --primary: #1a365d;
+  --primary-light: #2563eb;
+  --accent: #d4af37;
+  --accent-light: #f4d76c;
+  --dark: #1a202c;
+  --dark-light: #2d3748;
+  --dark-lighter: #4a5568;
+  color-scheme: dark;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-accent: var(--accent);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Force dark background on html and body */
+html {
+  background-color: #0a0a0a !important;
+  color-scheme: dark;
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #0a0a0a !important;
+  color: #ededed !important;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+}
+
+/* Override any light mode preferences */
+@media (prefers-color-scheme: light) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+    color-scheme: dark;
+  }
+  
+  html, body {
+    background-color: #0a0a0a !important;
+    color: #ededed !important;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a202c;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4a5568;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d4af37;
+}
+
+/* Selection color */
+::selection {
+  background: #d4af37;
+  color: #0a0a0a;
+}
+
+/* Ensure all elements inherit dark background */
+* {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Ocean Wave Animation */
+@keyframes wave {
+  0% {
+    transform: translateX(0) translateZ(0) scaleY(1);
+  }
+  50% {
+    transform: translateX(-25%) translateZ(0) scaleY(0.55);
+  }
+  100% {
+    transform: translateX(-50%) translateZ(0) scaleY(1);
+  }
+}
+
+@keyframes wave-slow {
+  0% {
+    transform: translateX(0) translateZ(0) scaleY(1);
+  }
+  50% {
+    transform: translateX(-25%) translateZ(0) scaleY(0.45);
+  }
+  100% {
+    transform: translateX(-50%) translateZ(0) scaleY(1);
+  }
+}
+
+.wave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 200%;
+  height: 120px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 88.7'%3E%3Cpath d='M800 56.9c-155.5 0-204.9-50-405.5-49.9-200 0-250 49.9-394.5 49.9v31.8h800z' fill='%231a4a6e'/%3E%3C/svg%3E");
+  background-size: 50% 100%;
+  animation: wave 10s linear infinite;
+  opacity: 0.4;
+}
+
+.wave:nth-child(2) {
+  bottom: 15px;
+  height: 100px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 88.7'%3E%3Cpath d='M800 56.9c-155.5 0-204.9-50-405.5-49.9-200 0-250 49.9-394.5 49.9v31.8h800z' fill='%23164058'/%3E%3C/svg%3E");
+  opacity: 0.5;
+  animation: wave-slow 8s linear infinite;
+}
+
+.wave:nth-child(3) {
+  bottom: 30px;
+  height: 80px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 88.7'%3E%3Cpath d='M800 56.9c-155.5 0-204.9-50-405.5-49.9-200 0-250 49.9-394.5 49.9v31.8h800z' fill='%230d2d40'/%3E%3C/svg%3E");
+  opacity: 0.6;
+  animation: wave 12s linear infinite reverse;
+}
+
+/* Moon glow effect */
+@keyframes moon-glow {
+  0%, 100% {
+    box-shadow: 0 0 60px rgba(200, 220, 255, 0.3), 0 0 120px rgba(200, 220, 255, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 80px rgba(200, 220, 255, 0.4), 0 0 160px rgba(200, 220, 255, 0.15);
+  }
+}
+
+/* Sun glow effect */
+@keyframes sun-glow {
+  0%, 100% {
+    box-shadow: 0 0 60px rgba(255, 200, 100, 0.4), 0 0 120px rgba(255, 180, 50, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 100px rgba(255, 200, 100, 0.5), 0 0 200px rgba(255, 180, 50, 0.25);
+  }
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .wave {
+    animation: none;
+  }
 }
